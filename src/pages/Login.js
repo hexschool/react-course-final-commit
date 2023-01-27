@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Login() {
   const [data, setData] = useState({
@@ -14,12 +14,24 @@ function Login() {
 
   const submit = async (e) => {
     const res = await axios.post('/v2/admin/signin', data);
-    const { token } = res.data;
-    axios.defaults.headers.common['Authorization'] = token;
-
-    const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`);
-    console.log(productRes);
+    const { token, expired } = res.data;
+    console.log(res.data);
+    document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
+    // 儲存 Token
   }
+  
+  useEffect(() => {
+    // 取出 Token
+    const token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('hexToken='))
+      ?.split('=')[1];
+    axios.defaults.headers.common['Authorization'] = token;
+    (async() => {
+      const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`);
+      console.log(productRes);
+    })();
+  }, [])
 
 
   return (<div className="container py-5">
