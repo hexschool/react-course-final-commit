@@ -1,13 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function AdminProducts() {
+  const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState({});
+
   useEffect(() => {
     (async () => {
       const productRes = await axios.get(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`,
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`,
       );
       console.log(productRes);
+      setProducts(productRes.data.products);
+      setPagination(productRes.data.pagination);
     })();
   }, []);
 
@@ -31,23 +36,28 @@ function AdminProducts() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>分類</td>
-            <td>名稱</td>
-            <td>價格</td>
-            <td>啟用</td>
-            <td>
-              <button type='button' className='btn btn-primary btn-sm'>
-                編輯
-              </button>
-              <button
-                type='button'
-                className='btn btn-outline-danger btn-sm ms-2'
-              >
-                刪除
-              </button>
-            </td>
-          </tr>
+          {products.map((product) => {
+            return (
+              <tr>
+                <td>{product.category}</td>
+                <td>{product.title}</td>
+                <td>{product.price}</td>
+                <td>{product.is_enabled ? '啟用' : '未啟用'}</td>
+                <td>
+                  <button type='button' className='btn btn-primary btn-sm'>
+                    編輯
+                  </button>
+                  <button
+                    type='button'
+                    className='btn btn-outline-danger btn-sm ms-2'
+                  >
+                    刪除
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+          
         </tbody>
       </table>
 
