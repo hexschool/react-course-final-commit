@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function ProductModal({ closeProductModal, getProducts }) {
+function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
   const [tempData, setTempData] = useState({
     title: '',
     category: '',
@@ -13,6 +13,24 @@ function ProductModal({ closeProductModal, getProducts }) {
     is_enabled: 1,
     imageUrl: '',
   });
+
+  useEffect(() => {
+    if (type === 'create') {
+      setTempData({
+        title: '',
+        category: '',
+        origin_price: 100,
+        price: 300,
+        unit: '',
+        description: '',
+        content: '',
+        is_enabled: 1,
+        imageUrl: '',
+      });
+    } else if (type === 'edit') {
+      setTempData(tempProduct);
+    }
+  }, [type, tempProduct]);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -36,8 +54,14 @@ function ProductModal({ closeProductModal, getProducts }) {
 
   const submit = async () => {
     try {
-      const res = await axios.post(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`,
+      let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`;
+      let method = 'post';
+      if (type === 'edit') {
+        api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempProduct.id}`;
+        method = 'put';
+      }
+      const res = await axios[method](
+        api,
         {
           data: tempData,
         },
