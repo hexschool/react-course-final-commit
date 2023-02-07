@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-function ProductModal({ closeProductModal }) {
+function ProductModal({ closeProductModal, getProducts }) {
   const [tempData, setTempData] = useState({
     title: '',
     category: '',
@@ -30,22 +30,25 @@ function ProductModal({ closeProductModal }) {
       setTempData({
         ...tempData,
         [name]: value,
-      })
+      });
     }
-  }
+  };
 
   const submit = async () => {
     try {
       const res = await axios.post(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`, {
-          data: tempData
-        }
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`,
+        {
+          data: tempData,
+        },
       );
       console.log(res);
+      closeProductModal();
+      getProducts();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div
@@ -96,7 +99,6 @@ function ProductModal({ closeProductModal }) {
                 <img src='' alt='' className='img-fluid' />
               </div>
               <div className='col-sm-8'>
-                <pre>{JSON.stringify(tempData)}</pre>
                 <div className='form-group mb-2'>
                   <label className='w-100' htmlFor='title'>
                     標題

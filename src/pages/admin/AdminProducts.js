@@ -13,15 +13,17 @@ function AdminProducts() {
       backdrop: 'static',
     });
 
-    (async () => {
-      const productRes = await axios.get(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`,
-      );
-      console.log(productRes);
-      setProducts(productRes.data.products);
-      setPagination(productRes.data.pagination);
-    })();
+    getProducts();
   }, []);
+
+  const getProducts = async () => {
+    const productRes = await axios.get(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`,
+    );
+    console.log(productRes);
+    setProducts(productRes.data.products);
+    setPagination(productRes.data.pagination);
+  }
 
   const openProductModal = () => {
     productModal.current.show();
@@ -32,7 +34,10 @@ function AdminProducts() {
 
   return (
     <div className='p-3'>
-      <ProductModal closeProductModal={closeProductModal} />
+      <ProductModal
+        closeProductModal={closeProductModal}
+        getProducts={getProducts}
+      />
       <h3>產品列表</h3>
       <hr />
       <div className='text-end'>
