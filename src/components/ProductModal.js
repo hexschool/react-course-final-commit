@@ -86,7 +86,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
         <div className='modal-content'>
           <div className='modal-header'>
             <h1 className='modal-title fs-5' id='exampleModalLabel'>
-              建立新商品
+              { type === 'create' ? '建立新商品' : `編輯 ${tempData.title}`}
             </h1>
             <button
               type='button'
@@ -240,7 +240,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
                         placeholder='請輸入產品說明內容'
                         className='form-check-input'
                         onChange={handleChange}
-                        value={tempData.is_enabled}
+                        checked={!!tempData.is_enabled}
                       />
                     </label>
                   </div>
