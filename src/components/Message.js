@@ -1,20 +1,22 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { MessageContext } from "../store/messageStore";
 
 function Message() {
-  const [message, setMessage] = useState({})
+  // const [message, setMessage] = useState({})
+  const [message, dispatch] = useContext(MessageContext)
 
   return (
     <>
       <button
         type='button'
         onClick={() => {
-          setMessage({
-            type: 'danger', // success, danger
-            title: '成功',
-            text: '這是一段成功的訊息',
+          dispatch({
+            type: 'POST_MESSAGE',
           });
           setTimeout(() => {
-            setMessage({});
+            dispatch({
+              type: 'CLEAR_MESSAGE',
+            });
           }, 3000);
         }}
       >
