@@ -1,9 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from 'react';
 import axios from "axios";
 import ProductModal from "../../components/ProductModal";
 import DeleteModal from "../../components/DeleteModal";
 import Pagination from "../../components/Pagination";
 import { Modal } from "bootstrap";
+import {
+  MessageContext,
+  handleSuccessMessage,
+  handleErrorMessage,
+} from '../../store/messageStore';
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -11,7 +16,7 @@ function AdminProducts() {
   // type: 決定 modal 展開的用途
   const [type, setType] = useState('create'); // edit
   const [tempProduct, setTempProduct] = useState({});
-
+  const [, dispatch] = useContext(MessageContext);
 
   const productModal = useRef(null);
   const deleteModal = useRef(null);
@@ -56,10 +61,12 @@ function AdminProducts() {
       const res = await axios.delete(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`);
       if (res.data.success) {
         getProducts();
+        handleSuccessMessage(dispatch, res);
         deleteModal.current.hide();
       }
     } catch (error) {
       console.log(error);
+      handleErrorMessage(dispatch, error);
     }
   }
 

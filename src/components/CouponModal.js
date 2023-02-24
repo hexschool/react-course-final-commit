@@ -1,5 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from 'react';
+import {
+  MessageContext,
+  handleSuccessMessage,
+  handleErrorMessage,
+} from '../store/messageStore';
 
 function ProductModal({ closeModal, getCoupons, type, tempCoupon }) {
   const [tempData, setTempData] = useState({
@@ -10,6 +15,7 @@ function ProductModal({ closeModal, getCoupons, type, tempCoupon }) {
     code: 'testCode',
   });
   const [date, setDate] = useState(new Date());
+  const [, dispatch] = useContext(MessageContext);
 
   useEffect(() => {
     if (type === 'create') {
@@ -65,10 +71,12 @@ function ProductModal({ closeModal, getCoupons, type, tempCoupon }) {
         },
       );
       console.log(res);
+      handleSuccessMessage(dispatch, res);
       closeModal();
       getCoupons();
     } catch (error) {
       console.log(error);
+      handleErrorMessage(dispatch, error);
     }
   };
 
