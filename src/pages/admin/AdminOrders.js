@@ -47,15 +47,6 @@ function AdminOrders() {
       />
       <h3>訂單列表</h3>
       <hr />
-      <div className='text-end'>
-        <button
-          type='button'
-          className='btn btn-primary btn-sm'
-          onClick={() => openOrderModal('create', {})}
-        >
-          建立新商品
-        </button>
-      </div>
       <table className='table'>
         <thead>
           <tr>
