@@ -25,7 +25,7 @@ function FrontLayout() {
   return (
     <>
       <Navbar cartData={cartData} />
-      <Outlet context={{ getCart }}></Outlet>
+      <Outlet context={{ getCart, cartData }}></Outlet>
       <div className='bg-dark'>
         <div className='container'>
           <div className='d-flex align-items-center justify-content-between text-white py-4'>
