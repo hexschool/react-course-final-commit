@@ -14,9 +14,9 @@ function Cart() {
           <div className='d-flex justify-content-between'>
             <h2 className='mt-2'>您的餐點</h2>
           </div>
-          { cartData.carts.map((item) => {
+          { cartData?.carts?.map((item) => {
             return (
-              <div className='d-flex mt-4 bg-light'>
+              <div className='d-flex mt-4 bg-light' key={item.id}>
                 <img
                   src={item.product.imageUrl}
                   alt=''
