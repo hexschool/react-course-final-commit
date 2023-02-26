@@ -7,15 +7,17 @@ import AdminOrders from './pages/admin/AdminOrders';
 import FrontLayout from './pages/front/FrontLayout';
 import Home from './pages/front/Home';
 import Products from './pages/front/Products';
+import ProductDetail from './pages/front/ProductDetail';
 
 function App() {
 
   return (
     <div className='App'>
       <Routes>
-        <Route path='/' element={ <FrontLayout/>}>
-          <Route path='' element={<Home/>}></Route>
-          <Route path='products' element={<Products/>}></Route>
+        <Route path='/' element={<FrontLayout />}>
+          <Route path='' element={<Home />}></Route>
+          <Route path='products' element={<Products />}></Route>
+          <Route path='product/:id' element={<ProductDetail />}></Route>
         </Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/admin' element={<Dashboard />}>
