@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 function Cart() {
   const { cartData, getCart } = useOutletContext();
@@ -46,12 +46,12 @@ function Cart() {
       <div className='row justify-content-center'>
         <div
           className='col-md-6 bg-white py-5'
-          style={{minHeight: 'calc(100vh - 56px - 76px)'}}
+          style={{ minHeight: 'calc(100vh - 56px - 76px)' }}
         >
           <div className='d-flex justify-content-between'>
             <h2 className='mt-2'>您的餐點</h2>
           </div>
-          { cartData?.carts?.map((item) => {
+          {cartData?.carts?.map((item) => {
             return (
               <div className='d-flex mt-4 bg-light' key={item.id}>
                 <img
@@ -108,12 +108,9 @@ function Cart() {
             <p className='mb-0 h4 fw-bold'>總金額</p>
             <p className='mb-0 h4 fw-bold'>NT${cartData.final_total}</p>
           </div>
-          <a
-            href='./checkout.html'
-            className='btn btn-dark w-100 mt-4 rounded-0 py-3'
-          >
+          <Link to='/checkout' className='btn btn-dark w-100 mt-4 rounded-0 py-3'>
             確認餐點正確
-          </a>
+          </Link>
         </div>
       </div>
     </div>
