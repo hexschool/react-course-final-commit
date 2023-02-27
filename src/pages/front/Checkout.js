@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Input } from '../../components/FormElements';
 import axios from 'axios';
@@ -12,6 +12,7 @@ function Checkout() {
   } = useForm({
     mode: 'onTouched',
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     const { name, email, tel, address } = data;    
@@ -30,6 +31,7 @@ function Checkout() {
       form,
     );
     console.log(res);
+    navigate(`/success/${res.data.orderId}`)
   };
 
   return (

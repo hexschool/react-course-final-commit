@@ -1,5 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 function Success() {
+  const { orderId } = useParams();
+  const [orderData, setOrderData] = useState({});
+
+  const getCart = async (orderId) => {
+    const res = await axios.get(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/order/${orderId}`,
+    );
+    console.log(res);
+    setOrderData(res.data.order);
+  };
+
+  useEffect(() => {
+    getCart(orderId);
+  }, [orderId]);
+
   return (
     <div className='container'>
       <div
@@ -31,32 +48,36 @@ function Success() {
               </div>
               <div className='card-body px-4 py-0'>
                 <ul className='list-group list-group-flush'>
-                  <li className='list-group-item px-0'>
-                    <div className='d-flex mt-2'>
-                      <img
-                        src='https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80'
-                        alt=''
-                        className='me-2'
-                        style={{ width: '60px', height: '60px' }}
-                      />
-                      <div className='w-100 d-flex flex-column'>
-                        <div className='d-flex justify-content-between fw-bold'>
-                          <h5>Lorem ipsum</h5>
-                          <p className='mb-0'>x10</p>
+                  {Object.values(orderData?.products || {}).map((item) => {
+                    return (
+                      <li className='list-group-item px-0' key={item.id}>
+                        <div className='d-flex mt-2'>
+                          <img
+                            src={item.product.imageUrl}
+                            alt=''
+                            className='me-2'
+                            style={{ width: '60px', height: '60px' }}
+                          />
+                          <div className='w-100 d-flex flex-column'>
+                            <div className='d-flex justify-content-between fw-bold'>
+                              <h5>{item.product.title}</h5>
+                              <p className='mb-0'>x{item.qty}</p>
+                            </div>
+                            <div className='d-flex justify-content-between mt-auto'>
+                              <p className='text-muted mb-0'>
+                                <small>NT${item.product.price}</small>
+                              </p>
+                              <p className='mb-0'>NT${item.final_total}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className='d-flex justify-content-between mt-auto'>
-                          <p className='text-muted mb-0'>
-                            <small>NT$12,000</small>
-                          </p>
-                          <p className='mb-0'>NT$12,000</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
+                      </li>
+                    );
+                  })}
                   <li className='list-group-item px-0 pb-0'>
                     <div className='d-flex justify-content-between mt-2'>
-                      <p className='mb-0 h4 fw-bold'>Lorem ipsum</p>
-                      <p className='mb-0 h4 fw-bold'>NT$24,000</p>
+                      <p className='mb-0 h4 fw-bold'>總計</p>
+                      <p className='mb-0 h4 fw-bold'>NT${orderData.total}</p>
                     </div>
                   </li>
                 </ul>
