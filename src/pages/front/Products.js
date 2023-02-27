@@ -26,7 +26,7 @@ function Products() {
 
   return (
     <>
-      <div className='container mt-md-5 mt-3 mb-7'>
+      <div className='container mt-md-5 mt-3 mb-7 full-height'>
         <Loading isLoading={isLoading} />
         <div className='row'>
           {products.map((product) => {

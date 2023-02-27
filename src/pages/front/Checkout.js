@@ -35,7 +35,7 @@ function Checkout() {
   };
 
   return (
-    <div className='bg-light pt-5 pb-7'>
+    <div className='bg-light pt-5 pb-7 full-height'>
       <div className='container'>
         <div className='row justify-content-center flex-md-row flex-column-reverse'>
           <form className='col-md-6' onSubmit={handleSubmit(onSubmit)}>

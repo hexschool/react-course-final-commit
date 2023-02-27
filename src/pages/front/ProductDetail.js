@@ -45,7 +45,7 @@ function ProductDetail() {
 
 
   return (
-    <div className='container'>
+    <div className='container full-height'>
       <div
         style={{
           minHeight: '400px',
