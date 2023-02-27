@@ -1,8 +1,20 @@
+import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 
 function Cart() {
-  const { cartData } = useOutletContext();
-  console.log(cartData);
+  const { cartData, getCart } = useOutletContext();
+
+  const removeCartItem = async (id) => {
+    try {
+      const res = await axios.delete(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`,
+      );
+      console.log(res);
+      getCart();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className='container'>
@@ -26,13 +38,16 @@ function Cart() {
                   }}
                 />
                 <div className='w-100 p-3 position-relative'>
-                  <a
-                    href='#'
-                    className='position-absolute'
-                    style={{ top: '16px', right: '16px' }}
+                  <button
+                    type="button"
+                    className='position-absolute btn'
+                    style={{ top: '10px', right: '10px' }}
+                    onClick={() => {
+                      removeCartItem(item.id)
+                    }}
                   >
                     <i className='bi bi-x-lg'></i>
-                  </a>
+                  </button>
                   <p className='mb-0 fw-bold'>{item.product.title}</p>
                   <p className='mb-1 text-muted' style={{ fontSize: '14px' }}>
                     {item.product.content}
